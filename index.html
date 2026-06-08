@@ -327,11 +327,11 @@
 
 <script>
 // ── CONFIG ──────────────────────────────────────────────────
-const FORM_ID   = '1FAIpQLSdDRCVkqLvuqZDJGcL47PniLkjbpCtW_sEeV4xVEqHrnFWGhA';
+const FORM_ID   = '1FAIpQLSdLbCgoO1pWtGUG-b_xVamzWSvS66WCiLhBvLa5E4zEldFOUg';
 const FORM_URL  = `https://docs.google.com/forms/u/0/d/e/${FORM_ID}/formResponse`;
-const E_CED     = 'entry.1357355233';
-const E_TIPO    = 'entry.1101738416';
-const E_MOT     = 'entry.1624080621';
+const E_CED     = 'entry.947199136';
+const E_TIPO    = 'entry.1084467850';
+const E_MOT     = 'entry.1598650899';
 
 // ── LOGO ────────────────────────────────────────────────────
 // logo removed
@@ -386,7 +386,7 @@ function editarCedula() {
 // ── MARCAR ──────────────────────────────────────────────────
 async function marcar(tipo) {
   const cedula  = getCedula();
-  const tipoVal = tipo === 'entrada' ? 'Entrada (Inicio de Jornada)' : 'Salida (Fin de Jornada)';
+  const tipoVal = tipo === 'entrada' ? 'Entrada' : 'Salida';
   const btnId   = tipo === 'entrada' ? 'btnEntrada' : 'btnSalida';
   const btn     = document.getElementById(btnId);
 
