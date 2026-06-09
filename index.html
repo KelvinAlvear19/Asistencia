@@ -504,9 +504,9 @@ async function reactivarNotif() {
       if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
     }, 1500);
     document.getElementById('notifReBtn').style.display = 'none';
-    new Notification('Migo · Notificaciones reactivadas ✅', {
-      body: 'Recibirás avisos a las 8:00 AM y 5:00 PM.'
-    });
+    navigator.serviceWorker.ready.then(r => r.showNotification('Migo · Notificaciones reactivadas ✅', {
+      body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laboral.'
+    }));
   } catch(e) {
     alert('Error al reactivar: ' + e.message);
   }
@@ -532,8 +532,10 @@ async function activarNotif() {
         console.warn('SW error:', e);
       }
     }
-    new Notification('Migo · Notificaciones activadas ✅', {
-      body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laboral.'
+    navigator.serviceWorker.ready.then(reg => {
+      reg.showNotification('Migo · Notificaciones activadas ✅', {
+        body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laboral.'
+      });
     });
   }
 }
@@ -565,7 +567,7 @@ async function reactivarNotif() {
       setTimeout(() => {
         if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
       }, 1500);
-      new Notification('Migo · Notificaciones reactivadas ✅', {
+      reg.showNotification('Migo · Notificaciones reactivadas ✅', {
         body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laboral.'
       });
     } catch(e) {
