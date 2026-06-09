@@ -455,30 +455,29 @@ async function activarNotif() {
   const p = await Notification.requestPermission();
   if (p === 'granted') {
     document.getElementById('notifBanner').style.display = 'none';
+    // Registrar Service Worker real
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.register('/Asistencia/sw.js', { scope: '/Asistencia/' });
+        console.log('SW registrado:', reg.scope);
+        // Ping cada 30s para que el SW chequee la hora
+        setInterval(() => {
+          if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+        }, 30000);
+        setTimeout(() => {
+          if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+        }, 1500);
+      } catch(e) {
+        console.warn('SW error:', e);
+      }
+    }
     new Notification('Migo · Notificaciones activadas ✅', {
-      body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laborable.'
+      body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laboral.'
     });
   }
 }
 
-// Scheduler: chequea cada 10s si es hora de notificar
-function schedulerTick() {
-  if (Notification.permission !== 'granted') return;
-  const n = new Date();
-  const h = n.getHours(), m = n.getMinutes(), s = n.getSeconds();
-  if (s > 10) return;
-  if (h === 8  && m === 0) {
-    new Notification('🟢 Migo · ¡Buenos días!', {
-      body: 'Ya puedes marcar tu entrada.', tag:'entrada', requireInteraction:true
-    });
-  }
-  if (h === 17 && m === 0) {
-    new Notification('🔵 Migo · ¡Fin de jornada!', {
-      body: 'Ya puedes marcar tu salida.', tag:'salida', requireInteraction:true
-    });
-  }
-}
-setInterval(schedulerTick, 10000);
+// Notificaciones manejadas por sw.js
 
 // ── PWA MANIFEST ────────────────────────────────────────────
 (function(){
