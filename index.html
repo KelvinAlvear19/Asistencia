@@ -275,6 +275,18 @@
         <div class="pill-sub">Cédula guardada en este dispositivo</div>
       </div>
       <button class="pill-edit" onclick="editarCedula()" title="Cambiar cédula">✏️</button>
+      <button class="pill-edit" onclick="reactivarNotif()" title="Reactivar notificaciones">🔔</button>
+    </div>
+
+    <!-- notif re-register button -->
+    <div id="notifReBtn" style="display:none;margin-bottom:12px;">
+      <button onclick="reactivarNotif()" style="
+        width:100%;padding:10px;border:1.5px solid var(--dorado);
+        border-radius:10px;background:#fffbeb;color:#92400e;
+        font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;
+        cursor:pointer;letter-spacing:.03em;">
+        🔔 Reactivar notificaciones
+      </button>
     </div>
 
     <!-- notif banner -->
@@ -448,6 +460,55 @@ function checkNotifBanner() {
   if (!('Notification' in window)) return;
   if (Notification.permission === 'default') {
     document.getElementById('notifBanner').style.display = 'flex';
+  } else if (Notification.permission === 'granted') {
+    // Permiso ya dado pero SW puede no estar registrado - mostrar botón
+    document.getElementById('notifReBtn').style.display = 'block';
+    // Intentar registrar SW automáticamente
+    registrarSWAuto();
+  }
+}
+
+async function registrarSWAuto() {
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    const reg = await navigator.serviceWorker.register('/Asistencia/sw.js', { scope: '/Asistencia/' });
+    console.log('SW auto-registrado:', reg.scope);
+    setInterval(() => {
+      if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+    }, 30000);
+    setTimeout(() => {
+      if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+      // Si SW activo, ocultar botón
+      document.getElementById('notifReBtn').style.display = 'none';
+    }, 2000);
+  } catch(e) {
+    console.warn('SW auto error:', e);
+  }
+}
+
+async function reactivarNotif() {
+  if (!('serviceWorker' in navigator)) {
+    alert('Tu navegador no soporta notificaciones en segundo plano.');
+    return;
+  }
+  try {
+    // Forzar nuevo registro
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (let r of regs) await r.unregister();
+    const reg = await navigator.serviceWorker.register('/Asistencia/sw.js', { scope: '/Asistencia/' });
+    console.log('SW re-registrado:', reg.scope);
+    setInterval(() => {
+      if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+    }, 30000);
+    setTimeout(() => {
+      if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+    }, 1500);
+    document.getElementById('notifReBtn').style.display = 'none';
+    new Notification('Migo · Notificaciones reactivadas ✅', {
+      body: 'Recibirás avisos a las 8:00 AM y 5:00 PM.'
+    });
+  } catch(e) {
+    alert('Error al reactivar: ' + e.message);
   }
 }
 
@@ -478,6 +539,40 @@ async function activarNotif() {
 }
 
 // Notificaciones manejadas por sw.js
+
+async function reactivarNotif() {
+  const perm = Notification.permission;
+  if (perm === 'denied') {
+    alert('Las notificaciones están bloqueadas. Ve a Configuración del sitio en Chrome y permite las notificaciones para esta página.');
+    return;
+  }
+  if (perm === 'default') {
+    await activarNotif();
+    return;
+  }
+  // Ya tiene permiso, solo re-registrar SW
+  if ('serviceWorker' in navigator) {
+    try {
+      // Desregistrar SW anterior
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) await r.unregister();
+      // Registrar de nuevo
+      const reg = await navigator.serviceWorker.register('/Asistencia/sw.js', { scope: '/Asistencia/' });
+      console.log('SW re-registrado:', reg.scope);
+      setInterval(() => {
+        if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+      }, 30000);
+      setTimeout(() => {
+        if (reg.active) reg.active.postMessage({ type: 'SCHEDULE_CHECK' });
+      }, 1500);
+      new Notification('Migo · Notificaciones reactivadas ✅', {
+        body: 'Recibirás avisos a las 8:00 AM y 5:00 PM cada día laboral.'
+      });
+    } catch(e) {
+      alert('Error al registrar notificaciones: ' + e.message);
+    }
+  }
+}
 
 // ── PWA MANIFEST ────────────────────────────────────────────
 (function(){
