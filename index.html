@@ -407,11 +407,46 @@ async function marcar(tipo) {
 
   const ua = navigator.userAgent;
   let dispositivo = 'Desconocido';
-  if (/iPhone/i.test(ua))       dispositivo = 'iPhone · Safari';
-  else if (/iPad/i.test(ua))    dispositivo = 'iPad · Safari';
-  else if (/Android/i.test(ua)) dispositivo = 'Android · ' + (/Chrome/i.test(ua) ? 'Chrome' : 'Otro');
-  else if (/Windows/i.test(ua)) dispositivo = 'Windows · ' + (/Chrome/i.test(ua) ? 'Chrome' : 'Otro');
-  else if (/Mac/i.test(ua))     dispositivo = 'Mac · ' + (/Chrome/i.test(ua) ? 'Chrome' : 'Safari');
+
+  // Detectar navegador
+  const browser = /EdgA?/i.test(ua) ? 'Edge'
+    : /SamsungBrowser/i.test(ua) ? 'Samsung Browser'
+    : /OPR|Opera/i.test(ua) ? 'Opera'
+    : /Firefox/i.test(ua) ? 'Firefox'
+    : /Chrome/i.test(ua) ? 'Chrome'
+    : /Safari/i.test(ua) ? 'Safari'
+    : 'Navegador';
+
+  if (/iPhone/i.test(ua)) {
+    const ios = ua.match(/OS ([\d_]+)/);
+    const ver = ios ? ios[1].replace(/_/g,'.') : '';
+    dispositivo = 'iPhone · iOS ' + ver + ' · ' + browser;
+
+  } else if (/iPad/i.test(ua)) {
+    const ios = ua.match(/OS ([\d_]+)/);
+    const ver = ios ? ios[1].replace(/_/g,'.') : '';
+    dispositivo = 'iPad · iOS ' + ver + ' · ' + browser;
+
+  } else if (/Android/i.test(ua)) {
+    // Intentar obtener modelo Android
+    const model = ua.match(/Android[\s\d.]+;\s*([^)]+)\)/);
+    const modelName = model ? model[1].trim() : 'Android';
+    dispositivo = modelName + ' · ' + browser;
+
+  } else if (/Windows/i.test(ua)) {
+    const win = ua.match(/Windows NT ([\d.]+)/);
+    const ver = win ? win[1] : '';
+    const winVer = ver === '10.0' ? '10/11' : ver;
+    dispositivo = 'Windows ' + winVer + ' · ' + browser;
+
+  } else if (/Macintosh/i.test(ua)) {
+    const mac = ua.match(/Mac OS X ([\d_]+)/);
+    const ver = mac ? mac[1].replace(/_/g,'.') : '';
+    dispositivo = 'Mac OS ' + ver + ' · ' + browser;
+
+  } else {
+    dispositivo = ua.substring(0, 50);
+  }
 
   const payload = { cedula, tipo: tipoVal, motivo, dispositivo };
 
