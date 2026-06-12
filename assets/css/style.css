@@ -19,7 +19,6 @@ body {
   display: flex; flex-direction: column; align-items: center;
 }
 
-/* ── HEADER ── */
 .header {
   width: 100%; background: #ffffff;
   display: flex; align-items: center; justify-content: center;
@@ -30,7 +29,6 @@ body {
 .header-title { font-size: 20px; font-weight: 900; color: var(--azul); letter-spacing: .01em; text-align: center; }
 .header-sub   { font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 2px; text-align: center; }
 
-/* ── CLOCK ── */
 .clock-bar {
   width: 100%; background: var(--azul2);
   display: flex; align-items: center; justify-content: center;
@@ -40,10 +38,8 @@ body {
 .clock-sep  { color: rgba(255,255,255,.35); }
 .clock-date { font-size: 12px; color: rgba(255,255,255,.8); font-weight: 700; }
 
-/* ── MAIN ── */
 .main { width: 100%; max-width: 480px; padding: 18px 14px 40px; }
 
-/* ── SETUP CARD ── */
 .card {
   background: #fff; border-radius: 20px;
   box-shadow: 0 6px 28px rgba(44,80,165,.11);
@@ -76,7 +72,6 @@ body {
 .btn-save:hover { background: #3a63c8; transform: translateY(-1px); }
 .btn-save:active { transform: scale(.98); }
 
-/* ── ERROR ── */
 .err {
   background: #fff0f0; border: 1.5px solid #fca5a5;
   border-radius: 10px; padding: 10px 14px;
@@ -84,7 +79,6 @@ body {
   margin-bottom: 16px; display: none;
 }
 
-/* ── ATTENDANCE CARD ── */
 .att-card {
   background: #fff; border-radius: 20px;
   box-shadow: 0 6px 28px rgba(44,80,165,.11);
@@ -92,7 +86,6 @@ body {
   animation: fadeUp .3s ease;
 }
 
-/* user pill */
 .user-pill {
   display: flex; align-items: center; gap: 10px;
   background: var(--gris); border-radius: 12px;
@@ -106,7 +99,6 @@ body {
   font-size: 17px; cursor: pointer; color: var(--muted); padding: 4px;
 }
 
-/* ── BIG BUTTONS ── */
 .btns-wrap { display: flex; flex-direction: column; gap: 14px; }
 
 .att-btn {
@@ -142,7 +134,6 @@ body {
   border-radius: 50%; animation: spin .7s linear infinite;
 }
 
-/* ── SUCCESS ── */
 .success {
   display: none; flex-direction: column; align-items: center;
   text-align: center; padding: 8px 0; animation: fadeUp .3s ease;
@@ -164,7 +155,6 @@ body {
 }
 .btn-back:hover { background: #e8eeff; }
 
-/* ── MOTIVO ── */
 .motivo-wrap { margin-top: 16px; }
 .motivo-wrap label {
   display: block; font-size: 11px; font-weight: 800;

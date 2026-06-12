@@ -5,7 +5,7 @@ const ASSETS = [
   '/Asistencia/manifest.json',
   '/Asistencia/assets/css/style.css',
   '/Asistencia/assets/js/app.js',
-  '/Asistencia/assets/icons/logo.png'
+  '/Asistencia/assets/icons/MigoAsistencia.png'
 ];
 
 self.addEventListener('install', e => {

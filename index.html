@@ -9,14 +9,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Asistencia Migo">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="assets/icons/logo.png">
+  <link rel="apple-touch-icon" href="assets/icons/MigoAsistencia.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
   <title>Asistencia · Migo</title>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div>
     <div class="header-title">Asistencia</div>
@@ -24,7 +23,6 @@
   </div>
 </div>
 
-<!-- CLOCK -->
 <div class="clock-bar">
   <span class="clock-time" id="clockTime">00:00:00</span>
   <span class="clock-sep">·</span>
@@ -33,23 +31,20 @@
 
 <div class="main">
 
-  <!-- SETUP -->
   <div class="card" id="setupCard">
     <div class="card-title">Bienvenido 👋</div>
     <div class="card-sub">Ingresa tu cédula una sola vez — quedará guardada en este dispositivo.</div>
     <div class="field">
       <label for="inCedula">Cédula de identidad</label>
       <input type="text" id="inCedula" placeholder="0912345678"
-             maxlength="13" inputmode="numeric" autocomplete="off">
+             maxlength="10" inputmode="numeric" autocomplete="off">
     </div>
     <div class="err" id="setupErr"></div>
     <button class="btn-save" onclick="guardar()">Guardar y continuar →</button>
   </div>
 
-  <!-- ATTENDANCE -->
   <div class="att-card" id="attCard">
 
-    <!-- user pill -->
     <div class="user-pill">
       <span class="pill-icon">🪪</span>
       <div>
@@ -59,7 +54,6 @@
       <button class="pill-edit" onclick="editarCedula()" title="Cambiar cédula">✏️</button>
     </div>
 
-    <!-- form -->
     <div id="formView">
       <div class="btns-wrap">
         <button class="att-btn btn-entrada" id="btnEntrada" onclick="marcar('entrada')">
@@ -84,11 +78,10 @@
       </div>
     </div>
 
-    <!-- success -->
     <div class="success" id="successView">
       <div class="success-circle" id="sucCircle">✅</div>
       <h2 id="sucTitle">¡Registrado!</h2>
-      <p  id="sucSub"></p>
+      <p id="sucSub"></p>
       <div class="success-time" id="sucTime"></div>
       <button class="btn-back" onclick="volver()">← Volver</button>
     </div>

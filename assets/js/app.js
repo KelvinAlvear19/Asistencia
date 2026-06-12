@@ -1,7 +1,5 @@
-// ── CONFIG ──────────────────────────────────────────────────
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdDRCVkqLvuqZDJGcL47PniLkjbpCtW_sEeV4xVEqHrnFWGhA/formResponse';
 
-// ── RELOJ ───────────────────────────────────────────────────
 const DIAS  = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
@@ -15,7 +13,6 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-// ── PERFIL ──────────────────────────────────────────────────
 function init() {
   const p = getCedula();
   if (!p) {
@@ -35,7 +32,7 @@ function guardar() {
   const err = document.getElementById('setupErr');
   err.style.display = 'none';
   if (!v)               { showErr(err, 'Ingresa tu cédula.'); return; }
-  if (v.length < 9)     { showErr(err, 'Mínimo 9 dígitos.'); return; }
+  if (v.length !== 10)  { showErr(err, 'La cédula debe tener 10 dígitos.'); return; }
   if (!/^\d+$/.test(v)) { showErr(err, 'Solo números.'); return; }
   localStorage.setItem('migo_cedula', v);
   init();
@@ -48,7 +45,6 @@ function editarCedula() {
   init();
 }
 
-// ── MARCAR ──────────────────────────────────────────────────
 async function marcar(tipo) {
   const cedula = getCedula();
   const btnId  = tipo === 'entrada' ? 'btnEntrada' : 'btnSalida';
@@ -82,7 +78,6 @@ async function marcar(tipo) {
   }
 }
 
-// ── ÉXITO ───────────────────────────────────────────────────
 function mostrarExito(tipo, cedula) {
   document.getElementById('formView').style.display    = 'none';
   document.getElementById('successView').style.display = 'flex';
@@ -107,7 +102,6 @@ function volver() {
 
 function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; }
 
-// ── INIT ────────────────────────────────────────────────────
 init();
 
 if ('serviceWorker' in navigator) {
